@@ -5,13 +5,12 @@ This project is an Employee Management System built using Python and Flask. It p
 ## Project Structure
 
 ```
-employee-management
-├── app
-│   ├── __init__.py
-│   ├── app.py
-│   ├── employee_controller.py
-│   ├── employee.py
-│   └── employee_routes.py
+lab-03-documentation
+├── __init__.py
+├── app.py
+├── employee_controller.py
+├── employee.py
+├── employee_routes.py
 ├── requirements.txt
 └── README.md
 ```
@@ -104,6 +103,30 @@ curl -X PUT http://localhost:5000/employees/1 \
    -H "Content-Type: application/json" \
    -d '{"id": 1, "name": "John Smith", "position": "Senior Software Engineer", "department": "Engineering"}'
 ```
+
+## Workshop Tasks
+
+### 1. Swagger
+Add Swagger (Flasgger) to the project so the entire API is self-documented and can be tested through the built-in Swagger UI.
+
+1. Initialize Swagger in `app.py`.
+2. Write a Flasgger YAML docstring for every endpoint in `employee_routes.py`.
+3. Verify that `/apidocs/` renders the Swagger UI and all routes are listed.
+
+### 2. Code Documentation
+Document the codebase thoroughly:
+
+* Add descriptive module, class and method docstrings to `employee.py`, `employee_controller.py`, `employee_routes.py`, and `app.py`.
+* Ensure each docstring explains purpose, parameters, return values and raises (if any).
+
+Hint: remember to use Control + I to bring the inline editor.
+
+### 3. API Documentation Export
+Update and publish the documentation:
+
+1. After the Swagger docstrings are in place, generate the OpenAPI spec (`swagger.json`).
+2. Produce a markdown file in a new `docs/` folder:
+   * `technical.md` – Full OpenAPI YAML/JSON plus class/method docstrings for deeper technical understanding.
 
 ## License
 
