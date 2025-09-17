@@ -1,198 +1,54 @@
-# Laboratorio 04: Refactorización con GitHub Copilot
+### Ejercicio 0: Migraciones de código desde un markdown
 
-## Prerrequisitos
-- Python 3.8+
-- IDE con GitHub Copilot instalado (VS Code recomendado)
-- Conocimientos básicos de Python y Flask
-- Git instalado
-
-## Configuración Inicial
-Antes de empezar, asegúrate de tener GitHub Copilot configurado en tu IDE y familiarízate con los comandos básicos de Copilot Chat.
-
-### Ejercicio 0: Migración de Código desde Markdown
-
-**Objetivo**: Migrar el código de un archivo markdown a un proyecto Python estructurado.
-Mediante el uso de copilot instructions para añadir contexto extra y aproximar el diseño a una arquitectura limpia.
-
-**Tiempo estimado**: 30 minutos
+**Objetivo**: Migrar el código de un archivo markdown a un proyecto Python.
+Mediante el uso de copilot instructions para añadir contexto extra y aproximar el diseño a nuestra arquitectura.
+Usaremos github copilot para ayudarnos a completar el código.
 
 **Instrucciones**:
-1. Crea un nuevo proyecto Python con la siguiente estructura:
-   ```
-   employee-management/
-   ├── src/
-   │   ├── models/
-   │   ├── repositories/
-   │   ├── services/
-   │   └── controllers/
-   ├── tests/
-   ├── requirements.txt
-   └── app.py
-   ```
-
-2. **Usa GitHub Copilot Chat** para generar el scaffolding del proyecto:
-   - Prompt sugerido: "Genera un proyecto Flask para gestión de empleados con arquitectura por capas (modelo, repositorio, servicio, controlador)"
-   - Incluye un modelo Employee con campos: id, nombre, apellido, email, departamento
-   - Implementa CRUD básico
-
-3. Instala dependencias y verifica que la aplicación ejecuta sin errores:
-   ```bash
-   pip install -r requirements.txt
-   python app.py
-   ```
-
-4. **Crea tests unitarios** usando pytest antes de refactorizar:
-   - Tests para cada método del servicio
-   - Tests para el repositorio
-   - Verifica que todos los tests pasan: `pytest tests/`
-
-**Resultado esperado**: Proyecto Flask funcional con tests que pasan.
-
----
+1. Crea un nuevo proyecto Python en tu IDE favorito.
+2. A través del READMErefact.md pide a copilot que genere el scaffolding del proyecto. Usa copilot-instructions.md para añadir contexto extra. y así poderlo adaptar a tu arquitectura.
+3. Compila el código generado por copilot y asegúrate de que no hay errores. python app
+4. Añade tests unitarios para los métodos del proyecto que te aseguren que las refactorizaciones que vamos a realizar no rompen nada, y asegurate que todos pasan antes de iniciar la refactorización.
 
 ### Ejercicio 1: Refactorización de Métodos
 
-**Objetivo**: Aplicar el principio de responsabilidad única dividiendo métodos largos.
-
-**Tiempo estimado**: 25 minutos
-
-**Concepto clave**: Un método debe hacer una sola cosa y hacerla bien.
+**Objetivo**: Refactorizar métodos largos en métodos más pequeños y manejables.
 
 **Instrucciones**:
-1. **Refactoriza `getAllEmployees`**:
-   - Usa Copilot para extraer la lógica de filtrado en `_filter_active_employees()`
-   - Extrae la lógica de transformación en `_transform_to_dto()`
-   - Prompt sugerido: "Refactoriza este método extrayendo métodos privados para filtrado y transformación"
+1. Refactoriza el método `getAllEmployees` para que use un método privado que maneje la lógica de obtención de empleados.
+2. Refactoriza el método `saveEmployee` para que use un método privado que maneje la lógica de guardado.
+3. Comprueba tus test unitarios
 
-2. **Refactoriza `saveEmployee`**:
-   - Extrae validación en `_validate_employee_data()`
-   - Extrae lógica de guardado en `_persist_employee()`
+### Ejercicio 2: Control de Errores
 
-3. **Ejecuta tests**: Verifica que todos siguen pasando tras la refactorización.
-
-**Antes vs Después**: Compara la legibilidad y mantenibilidad del código.
-
----
-
-### Ejercicio 2: Manejo Robusto de Errores
-
-**Objetivo**: Implementar manejo de excepciones siguiendo buenas prácticas.
-
-**Tiempo estimado**: 20 minutos
+**Objetivo**: Añadir control de errores a los métodos del servicio.
 
 **Instrucciones**:
-1. **Mejora `getEmployeeById`**:
-   - Crea excepción personalizada `EmployeeNotFoundError`
-   - Implementa logging de errores
-   - Prompt: "Añade manejo de errores robusto con excepciones personalizadas y logging"
+1. Añade control de errores al método `getEmployeeById` para manejar el caso en que el empleado no exista.
+2. Añade control de errores al método `deleteEmployee` para manejar el caso en que el empleado no exista.
+3. Comprueba y modifica tus test unitarios.
 
-2. **Mejora `deleteEmployee`**:
-   - Maneja casos de empleado no existente
-   - Implementa soft delete si es apropiado
-   - Añade validaciones de integridad
+### Ejercicio 3: Extracción de Funciones
 
-3. **Actualiza tests**:
-   - Tests para casos de error
-   - Verifica que las excepciones se lanzan correctamente
-   - Tests para logging
-
-**Patrones a aplicar**: Try-catch específicos, logging estructurado, excepciones descriptivas.
-
----
-
-### Ejercicio 3: Eliminación de Código Duplicado (DRY)
-
-**Objetivo**: Identificar y extraer lógica repetitiva en métodos reutilizables.
-
-**Tiempo estimado**: 25 minutos
+**Objetivo**: Extraer lógica repetitiva en métodos reutilizables.
 
 **Instrucciones**:
-1. **Extrae búsqueda por email**:
-   - Crea `_find_employee_by_email(email: str) -> Employee`
-   - Reutiliza en múltiples métodos
-   - Prompt: "Identifica código duplicado y extrae métodos helper reutilizables"
+1. Extrae la lógica de búsqueda de empleados por correo electrónico en un método privado reutilizable.
+2. Extrae la lógica de ordenación de empleados por apellido en un método privado reutilizable.
+3. Actualiza y comprueba tus test unitarios.
 
-2. **Extrae ordenación por apellido**:
-   - Crea `_sort_employees_by_lastname(employees: List[Employee]) -> List[Employee]`
-   - Implementa ordenación con criterios múltiples
+### Ejercicio 4: Añadir Nuevas Funcionalidades
 
-3. **Refactoriza validaciones comunes**:
-   - Extrae `_validate_email_format()`
-   - Extrae `_validate_required_fields()`
-
-**Tests**: Añade tests específicos para los métodos helper extraídos.
-
----
-
-### Ejercicio 4: Expansión de Funcionalidades
-
-**Objetivo**: Implementar nuevas features manteniendo la calidad del código.
-
-**Tiempo estimado**: 30 minutos
+**Objetivo**: Añadir nuevos métodos al repositorio y usarlos en el servicio.
 
 **Instrucciones**:
-1. **Nuevos métodos en el repositorio**:
-   - `find_by_name(name: str) -> List[Employee]`
-   - `find_by_department(department: str) -> List[Employee]`
-   - `get_employees_paginated(page: int, size: int) -> PaginatedResult`
+1. Añade un método en el repositorio para buscar empleados por nombre y un método para ordenar por apellido.
+2. Usa este método en el servicio para implementar una nueva funcionalidad.
+3. Añade test unitarios para estas nuevas funcionalidades y asegúrate de que todos los tests pasan.
 
-2. **Implementa en el servicio**:
-   - `searchEmployeesByName(name: str)`
-   - `getEmployeesByDepartment(department: str)`
-   - `getEmployeesPaginated(page: int, size: int)`
+### Ejercicio 5: Documentación
 
-3. **Añade endpoints REST**:
-   - `GET /employees/search?name=xxx`
-   - `GET /employees/department/{dept}`
-   - `GET /employees?page=1&size=10`
-
-**Tests**: TDD - escribe tests primero, luego implementa.
-
----
-
-### Ejercicio 5: Documentación y Mejores Prácticas
-
-**Objetivo**: Documentar el código siguiendo estándares profesionales.
-
-**Tiempo estimado**: 20 minutos
+**Objetivo**: Añadir documentación a los métodos del servicio.
 
 **Instrucciones**:
-1. **Añade docstrings** siguiendo PEP 257:
-   - Usa Copilot para generar docstrings descriptivos
-   - Incluye parámetros, retornos y excepciones
-   - Prompt: "Genera docstrings completos siguiendo PEP 257 para todos los métodos públicos"
-
-2. **Añade type hints** completos:
-   - Usa typing para mayor claridad
-   - Implementa validación con pydantic si es necesario
-
-3. **Genera documentación API**:
-   - Usa Flask-RESTX o similar para documentación automática
-   - Incluye ejemplos de uso
-
-**Bonus**: Genera README.md automáticamente con Copilot incluyendo ejemplos de uso.
-
----
-
-## Criterios de Evaluación
-
-- [ ] Proyecto ejecuta sin errores
-- [ ] Todos los tests pasan
-- [ ] Código bien estructurado y legible
-- [ ] Manejo adecuado de errores
-- [ ] Documentación completa
-- [ ] Principios SOLID aplicados
-
-## Recursos Adicionales
-
-- [PEP 8 - Style Guide](https://pep8.org/)
-- [Pytest Documentation](https://docs.pytest.org/)
-- [Flask Best Practices](https://flask.palletsprojects.com/en/2.3.x/patterns/)
-
-## Próximos Pasos
-
-Después de completar este laboratorio, considera:
-- Implementar autenticación y autorización
-- Añadir base de datos real (PostgreSQL/MySQL)
-- Implementar caching con Redis
-- Añadir monitoreo y métricas
+1. Añade comentarios a todos los métodos públicos.
