@@ -80,9 +80,10 @@ This repository contains a collection of challenges to improve your skills with 
 
 In this section, you’ll explore **GitHub Copilot Coding Agent** in action. Follow these steps to try it out:  
 
-1. **Fork** the following repository into your GitHub account: *[https://github.com/Geronimo-Basso/github-coding-agent-demo]*  
-2. **Explore** the repository briefly — you can even ask Copilot directly on GitHub to explain parts of the code.  
-3. **Create a new issue** in the repository. We suggest naming it:  
+1. **Download** the following repository: *[https://github.com/Geronimo-Basso/github-coding-agent-demo]*
+2. **Create** a new Git repo with the code and upload it to GitHub.
+3. **Explore** the repository briefly — you can even ask Copilot directly on GitHub to explain parts of the code.  
+4. **Create a new issue** in the repository. We suggest naming it:  
    > **Add height and weight filters to player directory interface**  
 
    You can structure the issue like this (or adapt it as you prefer):  
@@ -106,9 +107,9 @@ In this section, you’ll explore **GitHub Copilot Coding Agent** in action. Fol
    - Add proper validation and unit labels in the UI.  
    - Update the README with details about the new filters.  
 
-4. **Assign the issue** to **GitHub Copilot Agent**.  
-5. **Observe and review** how Copilot handles the implementation.  
-6. **Merge** the changes once ready — and don’t stop there! Try asking Copilot for more improvements or creative additions.  
+5. **Assign the issue** to **GitHub Copilot Agent**.  
+6. **Observe and review** how Copilot handles the implementation.  
+7. **Merge** the changes once ready — and don’t stop there! Try asking Copilot for more improvements or creative additions.  
 
 ## Expected API Endpoints (once fixed)
 
