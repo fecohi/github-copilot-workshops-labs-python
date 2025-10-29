@@ -66,7 +66,138 @@ This repository contains a collection of challenges to improve your skills with 
 5. Try using a specific chat mode for a particular task, such as code generation or solving doubts.
 6. Compare the results obtained with different chat modes and adjust your approach as needed.
 
-### 5.- Computer Vision in multimodal models
+### 5.- Custom Prompt Files
+**Objective**: Learn how to create reusable Markdown files (*.prompt.md) that define prompts for repetitive tasks such as explaining code, generating tests, or reviewing PRs. These files are typically stored in `.github/prompts/` within your repository. In VS Code, you can open Copilot Chat and execute the slash command `/<prompt-name>` that matches the file name (without extension). Prompts can request inputs using `${input:key:label}` and run in agent mode.
+
+#### Part 1: Create an "Explain Python Code" Prompt
+
+**Instructions**:
+1. Create a file called `.github/prompts/explain-python.prompt.md` in your project.
+2. Paste the following content:
+   ```markdown
+   ---
+   mode: 'agent'
+   description: 'Explain a Python function in a simple and structured way'
+   ---
+   
+   Please explain the following Python code clearly for the selected audience.
+   
+   🐍 **Python code to explain**:
+   ${input:code:Paste the Python code here}
+   
+   🎯 **Target audience**:
+   ${input:audience:Who is this for? (beginner/intermediate/advanced)}
+   
+   Your explanation must include:
+   - A short summary of what the code does
+   - A step-by-step breakdown
+   - Explanation of key Python concepts involved
+   - One simple usage example
+   - Common pitfalls or edge cases
+   ```
+3. Open the Copilot Chat panel in VS Code.
+4. Type the slash command: `/explain-python`
+5. Paste this example code when asked:
+   ```python
+   def fibonacci(n):
+       return n if n <= 1 else fibonacci(n-1) + fibonacci(n-2)
+   ```
+6. Set the audience to "beginner".
+
+**✅ Checkpoint**: Copilot should produce a clear explanation with bullet points and an example.
+
+#### Part 2: Create a "Code Review" Prompt
+
+**Instructions**:
+1. Create a file called `.github/prompts/review-python.prompt.md`
+2. Paste the following content:
+   ```markdown
+   ---
+   mode: 'agent'
+   description: 'Perform a structured code review for Python code'
+   ---
+   
+   Perform a technical review of the following Python code.
+   
+   🐍 **Code to review**:
+   ${input:code:Paste your Python code here}
+   
+   ⚖️ **Focus areas**:
+   ${input:criteria:readability, performance, security, maintainability, testing}
+   
+   Please respond with:
+   - Findings grouped by each selected area
+   - Potential risks and how to fix them
+   - Recommended refactors or Pythonic improvements
+   - Quick wins with priority levels (high/medium/low)
+   ```
+3. Go back to Copilot Chat and run: `/review-python`
+4. Paste this code snippet (which has a common Python issue):
+   ```python
+   def add_items(items=[]):
+       for i in range(10):
+           items.append(i)
+       return items
+   ```
+
+**✅ Checkpoint**: Copilot should flag the mutable default argument and suggest best practices.
+
+#### Part 3: Create a "Generate Unit Tests" Prompt
+
+**Instructions**:
+1. Create a file called `.github/prompts/generate-tests-python.prompt.md`
+2. Paste the following content:
+   ```markdown
+   ---
+   mode: 'agent'
+   description: 'Generate pytest-style unit tests for a given Python function'
+   ---
+   
+   Write a pytest test suite for the following Python code.
+   
+   🧩 **Code under test**:
+   ${input:code:Paste the Python function or module here}
+   
+   🧠 **Test strategy**:
+   ${input:matrix:Describe the edge cases, invalid inputs, and expected failures}
+   
+   Requirements:
+   - Use `pytest` conventions
+   - Cover success, edge, and failure scenarios
+   - Use clear and descriptive test names
+   - Include minimal setup and teardown
+   - Highlight any missing test coverage areas
+   ```
+3. Run in Copilot Chat: `/generate-tests-python`
+4. Paste a function such as:
+   ```python
+   def divide(a, b):
+       return a / b
+   ```
+5. Describe matrix: "zero division, negative numbers, floats"
+6. Save the result into a file: `test_divide.py`
+7. Run the tests:
+   ```sh
+   pytest -v test_divide.py
+   ```
+
+**✅ Checkpoint**: Copilot should produce a full pytest file with at least 3-4 test functions.
+
+#### Part 4: Best Practices (5-10 min)
+
+- Always store prompt files in `.github/prompts/`
+- Use meaningful names: `explain-python.prompt.md` → `/explain-python`
+- Keep prompts short, structured, and action-oriented
+- Add the `description` field in YAML front-matter — it appears in Copilot Chat suggestions
+- Review prompt files via pull requests, just like code
+
+#### Optional Challenges
+
+1. Create an **onboarding prompt** that generates a 5-day learning plan for a new Python developer joining your project.
+2. Create a **refactor prompt** that suggests PEP-8 improvements for any file.
+3. Create a **documentation prompt** that generates comprehensive docstrings for the `employee_controller.py` module.
+
+### 6.- Computer Vision in multimodal models
 **Objective**: Explore the capabilities of multimodal models that can process and understand both text and images.
 
 **Instructions**:
