@@ -66,7 +66,138 @@ This repository contains a collection of challenges to improve your skills with 
 5. Try using a specific chat mode for a particular task, such as code generation or solving doubts.
 6. Compare the results obtained with different chat modes and adjust your approach as needed.
 
-### 5.- Computer Vision in multimodal models
+### 5.- Custom Prompt Files
+**Objective**: Learn how to create reusable Markdown files (*.prompt.md) that define prompts for repetitive tasks such as explaining code, generating tests, or reviewing PRs. These files are typically stored in `.github/prompts/` within your repository. In VS Code, you can open Copilot Chat and execute the slash command `/<prompt-name>` that matches the file name (without extension). Prompts can request inputs using `${input:key:label}` and run in agent mode.
+
+#### Part 1: Create an "Explain Python Code" Prompt
+
+**Instructions**:
+1. Create a file called `.github/prompts/explain-python.prompt.md` in your project.
+2. Paste the following content:
+   ```markdown
+   ---
+   mode: 'agent'
+   description: 'Explain a Python function in a simple and structured way'
+   ---
+   
+   Please explain the following Python code clearly for the selected audience.
+   
+   🐍 **Python code to explain**:
+   ${input:code:Paste the Python code here}
+   
+   🎯 **Target audience**:
+   ${input:audience:Who is this for? (beginner/intermediate/advanced)}
+   
+   Your explanation must include:
+   - A short summary of what the code does
+   - A step-by-step breakdown
+   - Explanation of key Python concepts involved
+   - One simple usage example
+   - Common pitfalls or edge cases
+   ```
+3. Open the Copilot Chat panel in VS Code.
+4. Type the slash command: `/explain-python`
+5. Paste this example code when asked:
+   ```python
+   def fibonacci(n):
+       return n if n <= 1 else fibonacci(n-1) + fibonacci(n-2)
+   ```
+6. Set the audience to "beginner".
+
+**✅ Checkpoint**: Copilot should produce a clear explanation with bullet points and an example.
+
+#### Part 2: Create a "Code Review" Prompt
+
+**Instructions**:
+1. Create a file called `.github/prompts/review-python.prompt.md`
+2. Paste the following content:
+   ```markdown
+   ---
+   mode: 'agent'
+   description: 'Perform a structured code review for Python code'
+   ---
+   
+   Perform a technical review of the following Python code.
+   
+   🐍 **Code to review**:
+   ${input:code:Paste your Python code here}
+   
+   ⚖️ **Focus areas**:
+   ${input:criteria:readability, performance, security, maintainability, testing}
+   
+   Please respond with:
+   - Findings grouped by each selected area
+   - Potential risks and how to fix them
+   - Recommended refactors or Pythonic improvements
+   - Quick wins with priority levels (high/medium/low)
+   ```
+3. Go back to Copilot Chat and run: `/review-python`
+4. Paste this code snippet (which has a common Python issue):
+   ```python
+   def add_items(items=[]):
+       for i in range(10):
+           items.append(i)
+       return items
+   ```
+
+**✅ Checkpoint**: Copilot should flag the mutable default argument and suggest best practices.
+
+#### Part 3: Create a "Generate Unit Tests" Prompt
+
+**Instructions**:
+1. Create a file called `.github/prompts/generate-tests-python.prompt.md`
+2. Paste the following content:
+   ```markdown
+   ---
+   mode: 'agent'
+   description: 'Generate pytest-style unit tests for a given Python function'
+   ---
+   
+   Write a pytest test suite for the following Python code.
+   
+   🧩 **Code under test**:
+   ${input:code:Paste the Python function or module here}
+   
+   🧠 **Test strategy**:
+   ${input:matrix:Describe the edge cases, invalid inputs, and expected failures}
+   
+   Requirements:
+   - Use `pytest` conventions
+   - Cover success, edge, and failure scenarios
+   - Use clear and descriptive test names
+   - Include minimal setup and teardown
+   - Highlight any missing test coverage areas
+   ```
+3. Run in Copilot Chat: `/generate-tests-python`
+4. Paste a function such as:
+   ```python
+   def divide(a, b):
+       return a / b
+   ```
+5. Describe matrix: "zero division, negative numbers, floats"
+6. Save the result into a file: `test_divide.py`
+7. Run the tests:
+   ```sh
+   pytest -v test_divide.py
+   ```
+
+**✅ Checkpoint**: Copilot should produce a full pytest file with at least 3-4 test functions.
+
+#### Part 4: Best Practices (5-10 min)
+
+- Always store prompt files in `.github/prompts/`
+- Use meaningful names: `explain-python.prompt.md` → `/explain-python`
+- Keep prompts short, structured, and action-oriented
+- Add the `description` field in YAML front-matter — it appears in Copilot Chat suggestions
+- Review prompt files via pull requests, just like code
+
+#### Optional Challenges
+
+1. Create an **onboarding prompt** that generates a 5-day learning plan for a new Python developer joining your project.
+2. Create a **refactor prompt** that suggests PEP-8 improvements for any file.
+3. Create a **documentation prompt** that generates comprehensive docstrings for the `employee_controller.py` module.
+
+### 6.- Computer Vision in multimodal models
 **Objective**: Explore the capabilities of multimodal models that can process and understand both text and images.
 
 **Instructions**:
@@ -76,7 +207,7 @@ This repository contains a collection of challenges to improve your skills with 
 4. Review the suggestions and code generated by Copilot.
 5. Make sure the code is correct and functional.
 
-# 🎁 Bonus Track
+# 🎁 Bonus Track I
 
 In this section, you’ll explore **GitHub Copilot Coding Agent** in action. Follow these steps to try it out:  
 
@@ -110,6 +241,71 @@ In this section, you’ll explore **GitHub Copilot Coding Agent** in action. Fol
 5. **Assign the issue** to **GitHub Copilot Agent**.  
 6. **Observe and review** how Copilot handles the implementation.  
 7. **Merge** the changes once ready — and don’t stop there! Try asking Copilot for more improvements or creative additions.  
+
+# 🎁 Bonus Track II
+
+In this section, you'll explore **GitHub Copilot CLI** in action. Follow these steps to try it out:
+
+## Usage Modes
+
+GitHub Copilot CLI can be used in two modes:
+
+**Interactive mode**: Start an interactive session by using the `copilot` command. This is the default mode for working with the CLI.
+
+In this mode, you can prompt Copilot to answer a question, or perform a task. You can react to Copilot's responses in the same session.
+
+**Programmatic mode**: You can also pass the CLI a single prompt directly on the command line. You do this by using the `-p` or `--prompt` command-line option. To allow Copilot to modify and execute files you should also use one of the approval options. For example:
+
+```bash
+copilot -p "Show me this week's commits and summarize them" --allow-tool 'shell(git)'
+```
+
+## Prerequisites
+- Node.js v22 or higher
+- npm v10 or higher
+- (On Windows) PowerShell v6 or higher
+- An active Copilot subscription. See [Copilot plans](https://github.com/features/copilot)
+- If you have access to GitHub Copilot via your organization or enterprise, you cannot use GitHub Copilot CLI if your organization owner or enterprise administrator has disabled it in the organization or enterprise settings
+
+## Installation
+1. **Install globally with npm**:
+   ```sh
+   npm install -g @github/copilot
+   ```
+
+2. **Launch the CLI**:
+   ```sh
+   copilot
+   ```
+   On first launch, you'll be greeted with an animated banner! If you'd like to see this banner again, launch copilot with the `--banner` flag.
+
+3. **Authenticate**:
+   If you're not currently logged in to GitHub, you'll be prompted to use the `/login` slash command. Enter this command and follow the on-screen instructions to authenticate.
+
+   **Alternative: Authenticate with a Personal Access Token (PAT)**
+   - Visit [https://github.com/settings/personal-access-tokens/new](https://github.com/settings/personal-access-tokens/new)
+   - Under "Permissions," click "add permissions" and select "Copilot Requests"
+   - Generate your token
+   - Add the token to your environment via the environment variable `GH_TOKEN` or `GITHUB_TOKEN` (in order of precedence)
+
+4. **Navigate** to this repository in your terminal.
+
+5. **Use GitHub Copilot CLI** to generate code or fix issues. For instance, you can ask to enhance the Employee Management UI created in Challenge 5, for example:
+   ```sh
+   copilot "add search filters"
+   ```
+   
+6. **Try asking for suggestions**. For instance, you can ask:
+   ```
+   Suggest improvements for employee_routes.py
+   ```
+   Review the suggestions provided by Copilot and apply the ones you find most useful.
+
+7. **Ask Copilot to create an issue for you on GitHub.com**. For example:
+   ```
+   Raise an improvement issue in <your-org>/<your-repo>. Add comprehensive unit tests for employee_controller.py to improve code coverage and ensure all CRUD operations are properly tested.
+   ```
+   Replace `<your-org>/<your-repo>` with your actual GitHub repository. Copilot will help you draft and create an issue directly in your repository with appropriate details and acceptance criteria.
 
 ## Expected API Endpoints (once fixed)
 
