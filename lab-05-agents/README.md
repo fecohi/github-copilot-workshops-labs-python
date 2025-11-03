@@ -183,7 +183,7 @@ This repository contains a collection of challenges to improve your skills with 
 
 **✅ Checkpoint**: Copilot should produce a full pytest file with at least 3-4 test functions.
 
-#### Part 4: Best Practices (5-10 min)
+#### Part 4: Best Practices
 
 - Always store prompt files in `.github/prompts/`
 - Use meaningful names: `explain-python.prompt.md` → `/explain-python`
