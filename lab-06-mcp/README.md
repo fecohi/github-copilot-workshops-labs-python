@@ -299,7 +299,23 @@ This lab guides you through using a Playwright Model Context Protocol (MCP) inte
 
 ### 🚀 Getting Started - Install the Playwright MCP 
 
-Naviagte to `https://github.com/microsoft/playwright-mcp?tab=readme-ov-file` and follow the steps to install the PlayWright MCP depending on prefered IDE.
+Navigate to `https://github.com/mcp/microsoft/playwright-mcp` and follow the steps to install the Playwright MCP depending on preferred IDE.
+
+For VS Code, the Playwright MCP server is configured in `.vscode/mcp.json`:
+
+```json
+{
+  "servers": {
+    "playwright": {
+      "type": "stdio",
+      "command": "npx",
+      "args": ["@playwright/mcp@latest"]
+    }
+  }
+}
+```
+
+Click "Start" next to the `playwright` server in the mcp.json file to launch it.
 
 ---
 
